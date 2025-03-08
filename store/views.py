@@ -11,6 +11,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from store.pagination import DefaultPagination
 
+from store.permissions import IsAdminOrReadOnly
 from .models import Cart, CartItem, Collection, Customer, OrderItem, Product, Review
 from .serializers import (AddCartItemSerializer, CartItemSerializer, CartSerializer,
     CollectionSerializer, CustomerSerializer, ProductSerializer, ReviewSerializer,
@@ -25,6 +26,7 @@ class ProductViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
     pagination_class = DefaultPagination
+    permission_classes = [IsAdminOrReadOnly]
     search_fields = ['title', 'description']
     ordering_fields = ['unit_price', 'last_update']
 
