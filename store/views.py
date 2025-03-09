@@ -15,8 +15,8 @@ from store.permissions import (FullDjangoModelPermissions, IsAdminOrReadOnly,
     ViewCustomerHistoryPermission)
 from .models import Cart, CartItem, Collection, Customer, Order, OrderItem, Product, Review
 from .serializers import (AddCartItemSerializer, CartItemSerializer, CartSerializer,
-    CollectionSerializer, CustomerSerializer, OrderSerializer, ProductSerializer, ReviewSerializer,
-    UpdateCartItemSerializer)
+    CollectionSerializer, CreateOrderSerializer, CustomerSerializer, OrderSerializer,
+    ProductSerializer, ReviewSerializer, UpdateCartItemSerializer)
 from .filters import ProductFilter
 
 # Create your views here.
@@ -101,8 +101,15 @@ class CustomerViewSet(ModelViewSet):
             return Response(serializer.data)
         
 class OrderViewSet(ModelViewSet):
-    serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateOrderSerializer
+        return OrderSerializer
+    
+    def get_serializer_context(self):
+        return {'user_id': self.request.user.id}
     
     def get_queryset(self):
         user = self.request.user
