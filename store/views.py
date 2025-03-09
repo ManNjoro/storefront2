@@ -6,7 +6,7 @@ from rest_framework.mixins import CreateModelMixin, RetrieveModelMixin, DestroyM
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, DjangoModelPermissions
-import rest_framework
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from store.pagination import DefaultPagination
